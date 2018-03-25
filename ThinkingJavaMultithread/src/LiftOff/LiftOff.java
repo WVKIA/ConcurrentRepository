@@ -4,7 +4,7 @@ package LiftOff;
  * 倒计时
  * 
  * @author wk
- *关灯进程
+ *关灯任务
  */
 public class LiftOff implements Runnable {
 
@@ -19,11 +19,13 @@ public class LiftOff implements Runnable {
 	public String status(){
 		return "#"+id+" " + (countDown > 0 ? countDown:"LIftoff!");
 	}
+
+
 	@Override
 	public void run() {
 		while(countDown-- > 0){
 			System.out.println(status());
-			Thread.yield();
+			Thread.yield();		//线程调度器的建议，表示：当前线程已经完成生命周期最重要的部分，可以把CPU执行权交给其他线程
 		}
 	}
 
