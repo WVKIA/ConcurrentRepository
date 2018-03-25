@@ -19,6 +19,8 @@ public class DaemonFromFactory implements Runnable{
 		}
 	}
 	public static void main(String[] args) throws InterruptedException {
+
+		//ExecutorService接收一个ThreadFactory对象用来创建线程
 		ExecutorService excu = Executors.newCachedThreadPool(new DaemonThreadFactory());
 		for(int i = 0;i < 5;i++){
 			excu.execute(new DaemonFromFactory());

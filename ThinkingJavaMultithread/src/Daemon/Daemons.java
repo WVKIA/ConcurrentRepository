@@ -1,7 +1,7 @@
 package Daemon;
 
 import java.util.concurrent.TimeUnit;
-
+//让步任务
 class DaemonSpawn implements Runnable {
 
 	@Override
@@ -13,7 +13,7 @@ class DaemonSpawn implements Runnable {
 	}
 
 }
-
+//打印任务
 class Daemon implements Runnable {
 	private Thread[] t = new Thread[10];
 
