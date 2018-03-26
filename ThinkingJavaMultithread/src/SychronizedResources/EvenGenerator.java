@@ -1,4 +1,4 @@
-package Sychronized;
+package SychronizedResources;
 /**
  * 线程不安全的版本
  * @author wk

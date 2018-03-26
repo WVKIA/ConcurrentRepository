@@ -1,4 +1,4 @@
-package Sychronized;
+package SychronizedResources;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;

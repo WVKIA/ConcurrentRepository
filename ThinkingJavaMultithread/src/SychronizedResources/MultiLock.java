@@ -1,4 +1,4 @@
-package Sychronized;
+package SychronizedResources;
 
 public class MultiLock {
 	public synchronized void f1(int count) {

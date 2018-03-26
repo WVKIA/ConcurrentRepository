@@ -1,4 +1,4 @@
-package Sychronized;
+package SychronizedResources;
 
 public class SynchronizedEvenGenerator extends IntGenerator {
 

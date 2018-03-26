@@ -1,4 +1,4 @@
-package Sychronized;
+package SychronizedResources;
 
 import java.util.Timer;
 import java.util.TimerTask;

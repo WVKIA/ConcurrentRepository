@@ -1,4 +1,4 @@
-package Sychronized;
+package SychronizedResources;
 
 public class ThreadTestA {
 	public static void main(String[] args) {

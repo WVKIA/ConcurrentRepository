@@ -13,7 +13,7 @@ class ExceptionThread2 implements Runnable{
 	}
 }
 
-/*
+/**
  * 自定义异常处理器
  */
 class MyUncaughtExceptionHandler implements Thread.UncaughtExceptionHandler{
