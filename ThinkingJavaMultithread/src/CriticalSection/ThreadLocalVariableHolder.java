@@ -27,6 +27,7 @@ class Accessor implements Runnable {
 }
 
 public class ThreadLocalVariableHolder {
+	//ThreadLocal对象，每个线程保留一个备份
 	private static ThreadLocal<Integer> value = new ThreadLocal<Integer>() {
 		private Random rand = new Random(47);
 
