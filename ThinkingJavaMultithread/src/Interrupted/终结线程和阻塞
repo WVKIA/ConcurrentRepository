@@ -1,0 +1,63 @@
+终结任务：
+    要中止任务，首先需要了解线程有哪几种状态
+
+    1、新建（new）
+            当线程被创建，已经分配了资源，并且初始化，但尚未启动，需要调度器将其调度
+     2、就绪（runnable）
+            runnable包括了操作系统线程状态中的running和ready，可能运行也可能等待CPU分配时间
+     3、阻塞（blocked）
+            线程正在等待获取一个排他锁，这个锁将在另一个线程放弃时。
+     4、Java线程 等待（wait）
+          Java线程状态
+            1、无限期等待
+                CPU不会分配时间，它们要等待被其他线程显示唤醒，以下方法：
+                    · 没有设置Timeout参数的 Object.wait()方法
+                    ·没有设置Timeout参数的 Thread.join()方法
+                    ·LockSupport.park(）方法
+            2、限期等待
+                CPU也不会分配时间，但它们无需其他线程唤醒，一定时间后它们会由系统自动唤醒，进入就绪状态
+                    ·Thread.sleep()
+                    ·设置Timeout的Object.wait()
+                    ·设置Timeout的Thread.join()
+                    ·LockSupport.parkNanos()
+                    ·LockSupport.parkUntil()
+     5、结束，死亡（Terminated）
+            终止线程的线程状态，结束执行
+
+
+
+下面我们看一下 中断（Java的中断）
+    当一个线程正在处于阻塞状态时，需要终止它，不能在代码中等待某一个状态点然后查看值，因为它有可能一直阻塞，需要强制这个任务跳出阻塞状态
+
+中断（Interrupt）
+    中断在Runnable.run方法中间打断被阻塞的任务，可能需要清理资源，更像是异常，所以Java线程中使用异常中断，意味着需要使用异常处理来控制流程，为了以异常的方式终止线程，需要考虑代码执行路径，并编写
+   catch子句用来正确清除所有的事物，例如资源
+
+
+
+   Thread的类有个  interrupt（） 方法，可以用来终结被阻塞的任务，这个方法会设置 线程的中断状态true，表示该线程处于可以被中断的状态，这时候，如果这个线程已经被阻塞了，或者
+   试图执行一个阻塞操作，那么这个线程将会抛出InterruptedException，当抛出这个异常时就表示退出了阻塞状态，需要我们处理资源的清理
+   当这个异常抛出来的时候，或者该线程自己调用了Thread.interrupted（）方法，中断状态会被复位为false，表示又可以阻塞而不被中断
+
+
+
+   为了调用 interrupted（），必须首先持有这个Thread对象，新的concurrent类库希望避免对Thread对象的直接操作，尽量通过Executor来操作，
+   如果在Executor上调用 shutdownNow（），那么它会发送一个 interrupt（）调用给它启动的所有线程，用来关闭Executor调用的所有任务，
+   但如果只希望中断某一个单一任务，使用Executor的话就需要通过调用submit（）而不是executor（）来启动任务，就可以持有该任务的上下文，
+        submit（）返回一个泛型Future<?>，持有这个Future的关键在于可以在它上面调用cancel（），并因此中断某个特定任务，传true的话就可以终止这个任务
+
+
+
+*我们通过Interrupting的测试类可以看出：
+    能够中断 对 sleep（）的调用，但不能中断 IO的阻塞、和Synchronized方法的阻塞
+    特别注意在创建执行 I/O的任务时，如果IO锁住，那么对于多线程是危害很大的
+
+    通常NIO提供更好的I/O中断
+
+
+
+可以看到，就像前面不可中断的IO阻塞一样，只有任务以不可中断的方式被阻塞，那么都会有锁住程序的可能，为了防止这个情况的发生，concurrent包中提供了 ReentrantLock，在ReentrantLock阻塞的
+任务可以被中断，同时这个也是类似synchronized的可重入的互斥锁，但可以被中断这个特性和sychronized就不一样
+ReentrantLock可以打断互斥造成的阻塞，但interrupt方法不能打断由synchronized造成的互斥阻塞
+
+

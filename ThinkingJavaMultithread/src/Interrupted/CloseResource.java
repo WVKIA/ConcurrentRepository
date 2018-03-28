@@ -9,6 +9,9 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * 用来关闭IO的阻塞
+ */
 public class CloseResource {
 	public static void main(String[] args) throws Exception {
 		ExecutorService ex = Executors.newCachedThreadPool();
@@ -18,13 +21,13 @@ public class CloseResource {
 		ex.execute(new IOBlocked(System.in));
 		TimeUnit.MILLISECONDS.sleep(100);
 		System.out.println("shutting down al threads");
-		ex.shutdown();
+		//发出中断
+		ex.shutdownNow();
 		TimeUnit.SECONDS.sleep(1);
 		System.out.println("Closing " + socketInput.getClass().getName());
 		socketInput.close();
 		TimeUnit.SECONDS.sleep(1);
 		System.out.println("Closing " + System.in.getClass().getName());
 		System.in.close();
-		;
 	}
 }

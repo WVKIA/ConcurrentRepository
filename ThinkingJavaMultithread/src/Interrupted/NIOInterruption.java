@@ -21,7 +21,6 @@ class NIOBlocked implements Runnable {
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
 		try {
 			System.out.println("waiting for read() in " + this);
 			sc.read(ByteBuffer.allocate(1));
@@ -43,12 +42,16 @@ public class NIOInterruption {
 		InetSocketAddress isa = new InetSocketAddress("localhost", 8080);
 		SocketChannel sc1 = SocketChannel.open(isa);
 		SocketChannel sc2 = SocketChannel.open(isa);
+		//通过submit执行
 		Future<?> f = e.submit(new NIOBlocked(sc1));
+		//通过execute执行
 		e.execute(new NIOBlocked(sc2));
 		e.shutdown();
 		TimeUnit.SECONDS.sleep(1);
+		//通过cancel可以中断
 		f.cancel(true);
 		TimeUnit.SECONDS.sleep(1);
+		//通过close也可以中断
 		sc2.close();
 	}
 }

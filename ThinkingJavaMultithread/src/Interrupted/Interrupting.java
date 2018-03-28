@@ -11,11 +11,9 @@ import java.util.concurrent.TimeUnit;
 class SleepBlocked implements Runnable {
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
 		try {
 			TimeUnit.SECONDS.sleep(100);
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
 			System.out.println("Interrupted Exception");
 		}
 		System.out.println("Exiting sleepBlocked run() ");
@@ -26,13 +24,11 @@ class IOBlocked implements Runnable {
 	private InputStream in;
 
 	public IOBlocked(InputStream is) {
-		// TODO Auto-generated constructor stub
 		this.in = is;
 	}
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
 		System.out.println("waiting to read(): ");
 		try {
 			in.read();
@@ -58,7 +54,6 @@ class SynchronizedBlocked implements Runnable {
 	public SynchronizedBlocked() {
 		new Thread() {
 			public void run() {
-				// TODO Auto-generated method stub
 				f();
 			}
 		}.start();
@@ -66,7 +61,6 @@ class SynchronizedBlocked implements Runnable {
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
 		System.out.println("Trying to call f()");
 		f();
 		System.out.println("Exiting synchronizedBlocked run(*)");
@@ -86,8 +80,11 @@ public class Interrupting {
 
 	public static void main(String[] args) throws InterruptedException {
 		test(new SleepBlocked());
+		System.out.println("========================");
 		test(new IOBlocked(System.in));
+		System.out.println("==========================");
 		test(new SynchronizedBlocked());
+		System.out.println("=============================");
 		TimeUnit.SECONDS.sleep(3);
 		System.out.println("Aborting with system.exit(0)");
 		System.exit(0);
