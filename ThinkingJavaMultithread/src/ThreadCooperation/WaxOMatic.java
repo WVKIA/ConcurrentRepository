@@ -53,7 +53,7 @@ class Car{
 }
 
 /**
- * 打蜡线程
+ * 打蜡
  */
 class WaxOn implements Runnable{
 	private Car car;
@@ -79,7 +79,7 @@ class WaxOn implements Runnable{
 }
 
 /**
- * 打蜡结束
+ * 抛光
  */
 class WaxOff implements Runnable{
 	private Car car;

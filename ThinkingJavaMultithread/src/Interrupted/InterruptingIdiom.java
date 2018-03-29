@@ -1,7 +1,7 @@
 package Interrupted;
 
 import java.util.concurrent.TimeUnit;
-
+//清理操作
 class NeedsCleanUp {
 	private final int id;
 
@@ -11,7 +11,6 @@ class NeedsCleanUp {
 	}
 
 	public void cleanup() {
-		// TODO Auto-generated method stub
 		System.out.println("Cleaning up " + id);
 	}
 
@@ -23,14 +22,14 @@ class Blocked3 implements Runnable {
 	public void run() {
 		try {
 			while (!Thread.interrupted()) {
-				// point1
+				// point1 代码点1
 				NeedsCleanUp n1 = new NeedsCleanUp(1);
 				// start try finally immediate after definition
 				// of n1,to guaranteeproper cleanup of n1
 				try {
-					System.out.println("Sleeping");
+					System.out.println("INFO:**[Sleeping]**======================");
 					TimeUnit.SECONDS.sleep(1);
-					// point2
+					// point2	代码点2
 					NeedsCleanUp n2 = new NeedsCleanUp(2);
 					try {
 						System.out.println("Calculating");
@@ -53,9 +52,11 @@ class Blocked3 implements Runnable {
 }
 
 public class InterruptingIdiom {
-	public static void main(String[] args) {
-		if(args.length != 1){
-			
-		}
+	public static void main(String[] args) throws InterruptedException {
+		Thread t = new Thread(new Blocked3());
+		t.start();
+		TimeUnit.MILLISECONDS.sleep(5000);
+		t.interrupt();
+
 	}
 }

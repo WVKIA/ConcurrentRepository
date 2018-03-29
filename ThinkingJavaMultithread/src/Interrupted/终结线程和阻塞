@@ -61,3 +61,57 @@
 ReentrantLock可以打断互斥造成的阻塞，但interrupt方法不能打断由synchronized造成的互斥阻塞
 
 
+* 检查中断：
+    注意，当你在线程上调用interrupt（）时，中断发生的唯一时刻是在任务要进入阻塞操作中，或者已经在阻塞操作中。但如果只是通过阻塞调用抛出异常然后才能退出线程任务，肯定是不行的。
+    所以要有两步处理。一个是当发生阻塞了，调用interrupt（）抛出异常，退出任务，另一个是没有阻塞发生，也需要一个步骤来退出任务，正确清理资源。
+
+    这个机会由中断状态来提供，状态为true可以通过调用interrupt（）方法，就像前面说的，表示可以接收中断，还可以通过 调用 interrupted（）方法来检查中断状态，不仅可以告诉我们interrupt（）方法是否被调用
+    过，还可以清除中断状态，也就是可以告诉我们interrupt（）方法有没有被调用，有没有线程发出中断信号，如果有，即中断标志设为了true，这时候 interrupted（）方法返回true，表示中断标志被设置，同时
+    还会把这个状态清除掉，设为false
+
+    即如果两次调用 interrupted（），第一次会返回true，然后把中断标志置为false，第二次就会返回false，因为中断标志为false
+
+    特别注意 interrupted（）的含义，表示“测试当前线程是否已经中断，当前线程是指运行 this.interrupted()方法的线程”
+        例如
+            psvm{
+                thread=new Thread()
+                thread.start()
+                thread.interrupt()
+
+                thread.interrupted()
+                thread.interrupted()
+
+            }
+         注意，此时会返回两次 false
+        其原因在于  定义中的当前线程 ，interrupted（）方法调用的当前线程是 main线程，main线程没有被interrupt（），所以都是false，所以 interrupted（）通常都是作用在runnable方法表示当前任务的
+
+
+        interrupted(）的意义在于通过检查当前线程是否处于被中断状态，然后处理退出程序
+        所以我们通常的是，两个结合在一起，抛出异常和中断检查 同时来处理中断
+
+
+
+        try{
+
+            //中断检测
+            while(!Thread.interrupted()){
+                //可能的阻塞操作
+            }
+        }catch(IterruptedException e){
+            //中断抛出异常
+
+        }
+
+
+
+* 注意代码 InterruptingIdiom的解释 *
+    如果 中断 interrupt（）的调用发出在代码点point1 时到达，在经过sleep（）的时候阻塞会抛出异常，然后退出，清理掉之前创建的 n1 对象，
+    经由外部 catch 子句捕获，退出程序
+    如果在 代码点point2的时候到达，首先循环会结束，然后所有对象清理，最后由while（）判断退出。
+
+    如果没有 Thread.interrupted(）的判断，而是改为 while（true），那么这个中断就会被忽略，继续执行
+
+    InterruptingIdiom代码是个很好的处理模板
+
+    所以我们在设计相应interrupt（）的类时，必须确保它的一致性，也就是所有需要清理的对象后面都需要跟着
+    try - finally子句用来清理，使无论run如何退出，都能保持清理的完成
