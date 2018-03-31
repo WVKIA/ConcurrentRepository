@@ -7,7 +7,10 @@ import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-class car{
+/**
+ * 使用Lock和Condition对象实现
+ */
+class Car1{
     private Lock lock = new ReentrantLock();
     private Condition condition = lock.newCondition();
     private boolean waxOn = false;
@@ -56,8 +59,8 @@ class car{
     }
 }
 class WaxOn1 implements Runnable{
-    private Car car;
-    WaxOn1(Car c){
+    private Car1 car;
+    WaxOn1(Car1 c){
         this.car = c;
 
     }
@@ -66,32 +69,32 @@ class WaxOn1 implements Runnable{
         try {
             while (!Thread.interrupted()){
                 System.out.println("wax on");
-                TimeUnit.MILLISECONDS.sleep(2000);
+                TimeUnit.MILLISECONDS.sleep(200);
                 car.waxed();
                 car.waitForBuffing();
             }
         }catch (InterruptedException e){
-            e.printStackTrace();
+            System.out.println("Exition via interrupt=============");
         }
         System.out.println("Ending wax on task");
     }
 }
 class WaxOff1 implements  Runnable{
-    private Car car;
-    WaxOff1(Car car){
+    private Car1 car;
+    WaxOff1(Car1 car){
         this.car = car;
     }
     @Override
     public void run() {
         try {
             while(!Thread.interrupted()){
-                car.waitFoxWaxing();
+                car.waitForWaxing();
                 System.out.println("wax off");
-                TimeUnit.MILLISECONDS.sleep(2000);
+                TimeUnit.MILLISECONDS.sleep(200);
                 car.buffed();
             }
         }catch (InterruptedException e){
-            e.printStackTrace();
+            System.out.println("Exition via interrupt=============");
         }
         System.out.println("Ending wax off task");
     }
@@ -99,7 +102,7 @@ class WaxOff1 implements  Runnable{
 
 public class WaxOnMatic2 {
     public static void main(String[] args) throws InterruptedException {
-        Car car = new Car();
+        Car1 car = new Car1();
         ExecutorService executorService = Executors.newCachedThreadPool();
         executorService.execute(new WaxOff1(car));
         executorService.execute(new WaxOn1(car));

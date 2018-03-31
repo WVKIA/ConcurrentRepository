@@ -8,3 +8,78 @@
 
 任务之间的握手，可以通过Object的wait()和notify()来实现，concurrent包也提供了 有 await（）和signal（）方法的Condition对象来完成
 
+
+那么首先需要了解Java原生协作工具 wait和notify
+
+    wait（）使自己可以等待某个条件发生变化，而这个条件的改变超出当前方法的控制能力，通常需要另一个任务来改变。通常使用while空循环，但不良的CPU使用。wait（）会将自身挂起，等待变化，通常是需要另一个任务调用
+    notify（）或notifyAll（），即表示发生了改变，之前的任务才会唤醒然后检查改变，继续执行下去。
+
+    同时注意对锁的控制权问题，调用sleep()方法时锁并没有释放，yield也没有释放，而一个任务在方法中遇到对wait（）的调用，线程的执行就会被挂起，对象锁也会被释放，这个因为只有自身的锁释放了，另一个任务才能获取这个锁，然后在特定条件改变是调用notify（）唤醒之前的
+    任务。
+    wait的声明就是：我已经做完我能做的事情，自身挂起，同时释放锁，希望其他synchronized方法可以执行，并且在条件改变使唤醒我
+
+    wait方法有两种：
+        一是带有时间参数的，还有不带时间参数的，不带时间参数的话一直等下去直到接收到notify或notifyAll消息。
+
+        而sleep区别在于sleep不会释放锁，而且在一定时间内就继续执行了，只是暂停一段时间而已，不需要其他线程的协作
+
+wait()、notify（）、notifyAll（）特殊的方面在于属于Object类的方法，不属于Thread类。
+这是因为这三个方法都需要操作对象锁，而对象锁属于所有对象都有的一部分，而且只能在获取对象锁之后才能调用这个三个方法，否则会抛出IllegalMonitorStateException，
+而sleep不需要获取对象锁，所以作为Thread的一部分
+
+
+**
+* 对于WaxOn中的等待 使用 while（）循环包围 wait（）方法，是很重要的，因为：
+    有可能在有多个任务，等待这个锁，此时被唤醒，然后另一个任务改变了条件，就会发生状态不一致，需要再次被wait，直到自己被唤醒，同时状态满足自己的要求
+
+   * 本质上就是检查特定条件，如果不满足就再次返回wait中，常用的方法就是使用一个while循环来判断，如果不满足就继续wait（重要）
+
+   而且应该注意的是
+        使用
+        synchronized(shareMonitor){
+            while(someCondition  ){
+                shareMonitor.wait()
+            }
+        }
+        而不是
+            while(someCondition ){
+                synchronized(shareMonitor){
+                    shareMonitor.wait()
+                }
+            }
+        因为如果采用第二种，我们来模拟一下
+            T1任务
+                synchronized(shareMonitor){
+                    <setup condition for T2>    //为T2设置条件
+                    shareMonitor.nofiy()
+                }
+            T2任务
+                while(someCondition ){
+                        //Point 1   代码点1
+                            synchronized(shareMonitor){
+                                shareMonitor.wait()
+                            }
+                        }
+             如果条件改变，T2进入while循环，在代码点1调度器切到了T1任务，然后T1设置了condition，此时T2不满足condition了，不应该执行，但还是继续之前的代码，进入wait中，错过了T1的condition，造成死锁
+
+             正确的解决办法就是防止在 condition变量上产生竞争条件，把它包到 synchronized中，避免被多线程同时访问
+             synchronized(shareMonitor){
+                while(someCondition){
+                    shareMonitor.wait()
+                }
+
+             }
+
+             这样可以保证你在退出等待之前，条件得到满足，或者完全退出等待之前，条件发生了变化，可以重新返回等待状态
+
+
+
+notify和notifyAll
+    唤醒的都是某个特定锁的任务，即所在monitor监视器锁等待的任务，只有等待这个锁的任务才会被唤醒
+
+
+Concurrent包提供了Lock和Condition对象
+    Lock lock=new Lock
+    Condition con=lock.condition()
+
+    然后通过获取 lock.lock，之后在调用conditoin.signal或者signalAll()来唤醒在 condition被挂起的任务，condition.await表示挂起对应的任务

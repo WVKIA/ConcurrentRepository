@@ -30,7 +30,7 @@ class  Meal{
 }
 
 /**
- * 等待的人
+ * 等待的人（消费者）
  */
 class  waitPerson implements  Runnable{
     //餐馆
@@ -51,7 +51,7 @@ class  waitPerson implements  Runnable{
                     }
                 }
                //如果餐馆食物存在
-                System.out.println("Waitperson got "+restaurant.meal);
+                System.out.println("Waitperson got "+restaurant.meal+"=========================");
                 //对餐馆的厨师进行同步锁定
                 synchronized (restaurant.chef){
                     //设置食物喂null，代表吃掉了
@@ -67,7 +67,7 @@ class  waitPerson implements  Runnable{
 }
 
 /**
- * 厨师
+ * 厨师（生产者）
  */
 class  chef implements  Runnable{
     //餐馆
