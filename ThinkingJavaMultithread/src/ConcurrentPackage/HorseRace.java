@@ -32,6 +32,7 @@ class Horse implements Runnable{
                 synchronized (this){
                     strides += random.nextInt(3);
                 }
+                System.out.println(id+" I'm arrvied.....");
                 //阻塞直到所有任务都到达栅栏CycliBarrier
                 barrier.await();
             }
@@ -74,6 +75,7 @@ public class HorseRace {
         barrier = new CyclicBarrier(nHorse, new Runnable() {
             @Override
             public void run() {
+                System.out.println("栅栏动作处理中。。。。。");
                 StringBuilder stringBuilder = new StringBuilder();
                 for (int i = 0; i < FINISH_LINE; i++) {
                     stringBuilder.append("=");
@@ -100,6 +102,7 @@ public class HorseRace {
                 }
             }
         });
+//        barrier = new CyclicBarrier(nHorse);
         for (int i = 0; i < nHorse; i++) {
             Horse horse = new Horse(barrier);
             horses.add(horse);
@@ -109,7 +112,7 @@ public class HorseRace {
 
     public static void main(String[] args) {
         int nhouts = 7;
-        int pause = 200;
+        int pause = 1000;
         new HorseRace(nhouts,pause);
     }
 }

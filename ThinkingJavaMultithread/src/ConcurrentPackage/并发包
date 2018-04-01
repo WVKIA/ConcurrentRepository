@@ -1,0 +1,28 @@
+常用并发包的工具
+
+CountDownLatch
+    作用：用来同步多个任务，强制它们等待其他任务执行的一组操作完成
+
+    具体来说，是有一个或多个前置任务，一个主要等待任务，这个主要等待任务需要前置任务全部完成之后，才能继续执行
+    CountDownLatch有两个主要方法 latch.countDown()和latch.await()，lacth.await（）主要应用在主要等待任务，是为了阻塞任务，然后等待前置任务完成，而latch.countDown应用在前置任务，前置任务完成就countDown（），
+    同时将latch的计数器减一，直到所有前置任务完成，计数器被减到0，主要等待任务就被唤醒，然后继续执行
+
+CyclicBarrier：栅栏
+    作用：希望创建一组任务，它们并行的工作，但会在下一个步骤之前等待，直到所有的任务都完成。使得所有并行的任务都将在栅栏处列队，因此可以一致的向前移动。
+    和CountDownLatch很像，但CountDownLatch是只触发一次的事件，但CyclicBarrier可以多次重用
+
+    栅栏的使用
+        会有一个公用的栅栏对象，给每个任务，每个任务在处理完自己的事情后，调用栅栏的 cyclicBarrier.await（）方法，表示自己到达了栅栏，等待其他任务到栅栏，然后 cyclicBarrier构造器有
+        new CyclicBarrier（int part，new Runnable(){
+            run(){}
+        }）
+        参数part就是有几个任务要到栅栏，自定义任务 runnable就是为了当所有任务全部到达栅栏时，栅栏需要做出的处理动作，这里也需要定义什么条件下所有任务停止工作，即exec.shutDownNow()
+
+        代码主要参见 HorseRace
+
+
+DelayQueue：延时队列
+    作用：无界的BlockingQueue，用于放置实现了Delayed接口的对象，其中的对象只能在到期时才能被取走，队列是有序的，即对头对象是延迟到期时间最长的，如果没有任何延迟到期，就不会有头元素，就会返回null
+
+PriorityBlockingQueue：优先队列
+    根据优先级来排序，然后取出优先级最高的来依次执行

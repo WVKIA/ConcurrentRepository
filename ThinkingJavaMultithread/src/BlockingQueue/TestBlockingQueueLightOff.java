@@ -50,7 +50,7 @@ public class TestBlockingQueueLightOff {
     }
     //测试不同的阻塞队列
     static void test(String msg,BlockingQueue<LiftOff> queue){
-        System.out.println(msg);
+        System.out.println(msg+"=======================");
         LiftOffRunner runner = new LiftOffRunner(queue);
         Thread t= new Thread(runner);
         t.start();

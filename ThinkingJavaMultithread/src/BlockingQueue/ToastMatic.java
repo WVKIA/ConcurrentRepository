@@ -169,7 +169,7 @@ class Eater implements Runnable{
                     System.out.println(">>Error : "+t);
                     System.exit(1);
                 }else {
-                    System.out.println("Chomp "+t);
+                    System.out.println("Chomp "+t+" ==================");
                 }
             }
         }catch (InterruptedException e){
