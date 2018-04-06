@@ -4,7 +4,7 @@ package SychronizedResources;
  * @author wk
  *
  */
-public class EvenGenerator extends IntGenerator {
+public class UnsafeEvenGenerator extends IntGenerator {
 
 	private int currentEvenValue = 0;
 	/**
@@ -18,7 +18,7 @@ public class EvenGenerator extends IntGenerator {
 		return currentEvenValue;
 	}
 	public static void main(String[] args) {
-		EvenChecker.test(new EvenGenerator());
+		EvenChecker.test(new UnsafeEvenGenerator());
 	}
 
 }

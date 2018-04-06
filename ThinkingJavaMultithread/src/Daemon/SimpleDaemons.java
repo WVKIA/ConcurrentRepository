@@ -6,7 +6,6 @@ public class SimpleDaemons implements Runnable {
 
 	@Override
 	public void run() {
-
 		try {
 			while (true) {
 				TimeUnit.MILLISECONDS.sleep(100);
@@ -25,7 +24,7 @@ public class SimpleDaemons implements Runnable {
 			daemon.setDaemon(true);
 			daemon.start();
 		}
-		System.out.println("all daemons started");
+		System.out.println("All daemons started");
 		TimeUnit.MILLISECONDS.sleep(175);
 	}
 

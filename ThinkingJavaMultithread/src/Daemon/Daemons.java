@@ -3,10 +3,8 @@ package Daemon;
 import java.util.concurrent.TimeUnit;
 //让步任务
 class DaemonSpawn implements Runnable {
-
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
 		while (true) {
 			Thread.yield();
 		}
@@ -41,7 +39,6 @@ public class Daemons {
 		d.start();
 		System.out.println("d.isDaemon() = " + d.isDaemon() + " ");
 		// Allow the daemon thread to finish their startup processes;
-
 		TimeUnit.SECONDS.sleep(1);
 	}
 }

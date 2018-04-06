@@ -1,0 +1,4 @@
+###线程异常
+>由于线程之间的隔离性，所以一个线程的异常不会被另一个线程捕获并处理，就像main方法不能处理新线程 的异常
+>Thread.UncaughtExceptionHandler允许为线程绑定一个异常处理器
+>>需要自定义类实现Thread.UncaughtExceptionHandler接口，然后实现uncaughtException方法，用来处理线程抛出的异常

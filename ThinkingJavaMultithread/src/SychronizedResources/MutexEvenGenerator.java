@@ -3,7 +3,7 @@ package SychronizedResources;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 /**
- * 使用concurrent包的LOck锁
+ * 使用concurrent包的Lock锁
  * Lock对象必须被显式的创建、锁定和释放
  * @author wk
  * 
