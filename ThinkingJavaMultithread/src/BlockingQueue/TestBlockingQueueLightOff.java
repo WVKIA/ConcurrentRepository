@@ -8,7 +8,7 @@ import java.io.InputStreamReader;
 import java.util.concurrent.*;
 
 class LiftOffRunner implements Runnable{
-    //关灯进程 同步队列
+    //关灯进程 同步队列.md
     private BlockingQueue<LiftOff> rockets;
     LiftOffRunner(BlockingQueue<LiftOff> queue){
         this.rockets = queue;
