@@ -1,6 +1,5 @@
-package Atomic;
+package AtomicModel;
 
-import java.util.Iterator;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**

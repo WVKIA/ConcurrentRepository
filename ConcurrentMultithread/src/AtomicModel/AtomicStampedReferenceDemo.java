@@ -1,6 +1,5 @@
-package Atomic;
+package AtomicModel;
 
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.concurrent.atomic.AtomicStampedReference;
 
 public class AtomicStampedReferenceDemo {

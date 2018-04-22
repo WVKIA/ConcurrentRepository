@@ -1,4 +1,4 @@
-package Atomic;
+package AtomicModel;
 
 public class SerialNumberGenerator {
 	private static volatile int serialNumber = 0;

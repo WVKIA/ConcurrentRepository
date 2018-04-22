@@ -1,4 +1,4 @@
-package Atomic;
+package AtomicModel;
 
 import java.util.Timer;
 import java.util.TimerTask;
