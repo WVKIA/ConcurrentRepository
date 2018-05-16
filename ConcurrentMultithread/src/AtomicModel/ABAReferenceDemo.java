@@ -1,7 +1,5 @@
 package AtomicModel;
 
-import sun.org.mozilla.javascript.internal.ast.ForInLoop;
-
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
