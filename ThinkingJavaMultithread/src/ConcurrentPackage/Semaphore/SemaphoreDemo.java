@@ -1,4 +1,4 @@
-package Semaphore;
+package ConcurrentPackage.Semaphore;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -7,13 +7,11 @@ import java.util.concurrent.TimeUnit;
 import LiftOff.LiftOff;
 
 public class SleepingTask extends LiftOff {
-	public void run() {
+	@Override
+    public void run() {
 		try {
 			while (countDown-- > 0) {
 				System.out.println(status());
-				// old style
-				// Thread.sleep(10)
-				// java se5/6-style
 				TimeUnit.MILLISECONDS.sleep(100);
 			}
 		} catch (InterruptedException e) {

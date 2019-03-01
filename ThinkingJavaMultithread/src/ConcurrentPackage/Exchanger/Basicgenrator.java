@@ -1,4 +1,4 @@
-package Exchanger;
+package ConcurrentPackage.Exchanger;
 
 public class Basicgenrator<T> implements Generator<T> {
     private Class<T> type;

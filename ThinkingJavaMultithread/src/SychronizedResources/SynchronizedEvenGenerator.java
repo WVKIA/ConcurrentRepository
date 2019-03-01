@@ -5,6 +5,7 @@ public class SynchronizedEvenGenerator extends IntGenerator {
 	private int currentEvenValue = 0;
 	/**
 	 * 使用synchronized内建锁关键字实现同步
+	 * 锁定this这个对象
 	 */
 	@Override
 	public synchronized int next() {

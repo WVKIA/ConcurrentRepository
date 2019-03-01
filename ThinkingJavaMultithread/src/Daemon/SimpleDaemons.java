@@ -7,6 +7,7 @@ public class SimpleDaemons implements Runnable {
 	@Override
 	public void run() {
 		try {
+			//后台进程一直打印
 			while (true) {
 				TimeUnit.MILLISECONDS.sleep(100);
 				System.out.println(Thread.currentThread() + " " + this);
@@ -25,6 +26,8 @@ public class SimpleDaemons implements Runnable {
 			daemon.start();
 		}
 		System.out.println("All daemons started");
+
+		//主main线程sleep
 		TimeUnit.MILLISECONDS.sleep(175);
 	}
 

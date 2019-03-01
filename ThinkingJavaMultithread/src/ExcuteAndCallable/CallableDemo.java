@@ -7,7 +7,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-
+//实现callable接口
 class TaskWithResult implements Callable<String> {
 
 	private int id;
@@ -18,8 +18,7 @@ class TaskWithResult implements Callable<String> {
 
 	@Override
 	public String call() throws Exception {
-
-		return "result of TaskWithResult" + id;
+		return "result of TaskWithResult" + id; //线程返回值
 	}
 
 }
@@ -29,11 +28,11 @@ public class CallableDemo {
 		ExecutorService excu  = Executors.newCachedThreadPool();
 		List<Future<String>> results = new ArrayList<>();
 		for(int i=0;i < 5;i++){
-			results.add(excu.submit(new TaskWithResult(i)));
+			results.add(excu.submit(new TaskWithResult(i)));//通过一个list保存submit的future对象
 		}
 		for (Future<String> future : results) {
 			try {
-				System.out.println(future.get());
+				System.out.println(future.get()); //调用阻塞的get
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 				return;

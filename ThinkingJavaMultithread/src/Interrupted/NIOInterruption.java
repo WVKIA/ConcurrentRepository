@@ -48,10 +48,19 @@ public class NIOInterruption {
 		e.execute(new NIOBlocked(sc2));
 		e.shutdown();
 		TimeUnit.SECONDS.sleep(1);
+
+
+		System.out.println("submit 执行的NIO通过调用future.cancel中断 --> ");
 		//通过cancel可以中断
 		f.cancel(true);
+
+
 		TimeUnit.SECONDS.sleep(1);
 		//通过close也可以中断
+		System.out.println("execute 执行的NIO通过调用资源close中断 --> ");
+
 		sc2.close();
+
+
 	}
 }

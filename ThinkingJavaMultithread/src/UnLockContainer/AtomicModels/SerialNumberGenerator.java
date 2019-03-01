@@ -1,4 +1,4 @@
-package AtomicModel;
+package UnLockContainer.AtomicModels;
 
 public class SerialNumberGenerator {
 	private static volatile int serialNumber = 0;

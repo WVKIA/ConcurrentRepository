@@ -19,10 +19,12 @@ public class CloseResource {
 		InputStream socketInput = new Socket("localhost", 8080).getInputStream();
 		ex.execute(new IOBlocked(socketInput));
 		ex.execute(new IOBlocked(System.in));
+		System.out.println("IO资源被锁定 -> ");
 		TimeUnit.MILLISECONDS.sleep(100);
 		System.out.println("shutting down al threads");
 		//发出中断
 		ex.shutdownNow();
+
 		TimeUnit.SECONDS.sleep(1);
 		System.out.println("Closing " + socketInput.getClass().getName());
 		socketInput.close();

@@ -1,4 +1,4 @@
-package Semaphore;
+package ConcurrentPackage.Semaphore;
 
 public class Fat {
     private volatile double d;

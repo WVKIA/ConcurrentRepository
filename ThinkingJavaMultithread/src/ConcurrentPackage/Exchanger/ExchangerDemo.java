@@ -1,9 +1,8 @@
-package Exchanger;
+package ConcurrentPackage.Exchanger;
 
 
-import Semaphore.Fat;
+import ConcurrentPackage.Semaphore.Fat;
 
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.*;
 
@@ -50,7 +49,7 @@ class ExchangerConsumer<T> implements Runnable {
                 holder = exchanger.exchange(holder);
                 for (T t : holder) {
                     value = t;    //
-                    holder.remove(t);
+                    holder.remove(t);//阻塞队列可以在遍历是remove
                 }
             }
         } catch (InterruptedException e) {

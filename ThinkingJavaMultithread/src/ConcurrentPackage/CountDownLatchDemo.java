@@ -81,9 +81,13 @@ public class CountDownLatchDemo {
         //All must share a single CountDownLatch object
         //所有线程countDownLatch必须使用同一个对象
         CountDownLatch latch = new CountDownLatch(SIZE);
+
+        //10个等待任务
         for (int i = 0; i < 10; i++) {
             executorService.execute(new WaitingTask(latch));
         }
+
+        //SIZE个执行任务
         for (int i = 0; i < SIZE; i++) {
             executorService.execute(new TaskPortion(latch));
         }
