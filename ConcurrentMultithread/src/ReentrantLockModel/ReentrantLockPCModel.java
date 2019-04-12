@@ -12,6 +12,7 @@ import java.util.concurrent.locks.ReentrantLock;
  * 使用lock和condition实现生产者消费者
  */
 class producerInt implements Runnable {
+    //毒丸模型
     public static Integer POISON_PILL = new Integer(-1);
     private static AtomicInteger atomicInteger = new AtomicInteger();
     public static int MAX_SIZE = 9;

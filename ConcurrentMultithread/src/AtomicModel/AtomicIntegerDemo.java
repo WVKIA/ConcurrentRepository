@@ -20,15 +20,19 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class AtomicIntegerDemo {
     private static AtomicInteger atomicInteger = new AtomicInteger(0);
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
         for (int i = 0; i < 5; i++) {
-            new Thread(new Runnable() {
+            Thread t=new Thread(new Runnable() {
                 @Override
                 public void run() {
 //                    System.out.println(atomicInteger.getAndIncrement());
                     System.out.println(atomicInteger.addAndGet(1));
                 }
-            }).start();
+            });
+            t.start();
+
+            //便于t执行完成
+            t.join();
         }
 
 
