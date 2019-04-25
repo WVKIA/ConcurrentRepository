@@ -1,6 +1,7 @@
 package ConcurrentHashMapModel;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
@@ -20,12 +21,32 @@ public class ConcurrentHashMapModel {
             executorService.execute(new Runnable() {
                 @Override
                 public void run() {
-                    map.put("" + finalI, finalI);
+                    map.put("" + finalI, finalI/2);
                 }
             });
         }
+
+        final Map<String, Integer> nonConMap = new HashMap<>();
+        for (int i = 0; i < 5; i++) {
+            final int finalI = i;
+            executorService.execute(new Runnable() {
+                @Override
+                public void run() {
+                    nonConMap.put("" + finalI, finalI/2);
+                }
+            });
+        }
+
         executorService.shutdown();
+        while (!executorService.isTerminated()) {
+
+        }
         System.out.println(map);
+        System.out.println(nonConMap);
+
+    }
+
+    public static void test() {
 
     }
 }
